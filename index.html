@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Integrado - Rede de Proteção BV</title>
+    <title>Sistema de Gestão Territorial - Boa Vista</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
         
+        /* Barra de Navegação */
         .navbar {
             display: flex;
             background-color: #1e272e;
@@ -21,7 +22,7 @@
 
         .navbar h1 { margin: 0; font-size: 14px; letter-spacing: 1px; color: #05c46b; }
 
-        .menu-mapas { display: flex; gap: 5px; flex-wrap: wrap; }
+        .menu-items { display: flex; gap: 5px; flex-wrap: wrap; }
         
         .btn-nav {
             background: #485460;
@@ -30,19 +31,20 @@
             padding: 8px 12px;
             cursor: pointer;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             transition: 0.2s;
+            text-transform: uppercase;
         }
 
         .btn-nav:hover { background: #05c46b; }
         .btn-nav.active { background: #05c46b; font-weight: bold; }
 
-        /* Destaque para o botão da Ficha */
-        .btn-ficha {
-            background-color: #3c40c6;
-            font-weight: bold;
-        }
-        .btn-ficha:hover { background-color: #575fcf; }
+        /* Destaque para a Ficha e Vila Jardim */
+        .btn-destaque { background-color: #3c40c6; font-weight: bold; }
+        .btn-destaque:hover { background-color: #575fcf; }
+        
+        .btn-vila { background-color: #d35400; font-weight: bold; }
+        .btn-vila:hover { background-color: #e67e22; }
 
         #content-frame {
             width: 100%;
@@ -66,22 +68,24 @@
 <body>
 
     <nav class="navbar">
-        <h1>📍 REDE BV</h1>
+        <h1>📍 REDE PROTEÇÃO BV</h1>
         
-        <div class="menu-mapas">
-            <button class="btn-nav active" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
+        <div class="menu-items">
+            <button class="btn-nav btn-vila active" onclick="carregar('mapa_vila_jardim_completo.html', this)">🏘️ Vila Jardim</button>
+            <button class="btn-nav" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this)">CREAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this)">Conselho</button>
             <button class="btn-nav" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
-            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 ABRIR FICHA</button>
+            
+            <button class="btn-nav btn-destaque" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 ABRIR FICHA</button>
         </div>
     </nav>
 
-    <iframe id="content-frame" src="Mapa_CRAS.html"></iframe>
+    <iframe id="content-frame" src="mapa_vila_jardim_completo.html"></iframe>
 
     <div class="info-footer">
-        Foco: Vila Jardim (Cidade Satélite)
+        Foco Estratégico: Vila Jardim (2.992 Unidades) | Boa Vista-RR
     </div>
 
     <script>
