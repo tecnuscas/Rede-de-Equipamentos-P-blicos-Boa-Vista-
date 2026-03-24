@@ -7,7 +7,7 @@
     <style>
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
         
-        /* Barra de Navegação */
+        /* Barra de Navegação Superior */
         .navbar {
             display: flex;
             background-color: #1e272e;
@@ -39,13 +39,14 @@
         .btn-nav:hover { background: #05c46b; }
         .btn-nav.active { background: #05c46b; font-weight: bold; }
 
-        /* Destaque para a Ficha e Vila Jardim */
-        .btn-destaque { background-color: #3c40c6; font-weight: bold; }
-        .btn-destaque:hover { background-color: #575fcf; }
-        
-        .btn-vila { background-color: #d35400; font-weight: bold; }
+        /* Estilos Especiais */
+        .btn-vila { background-color: #d35400; font-weight: bold; } /* Laranja para destaque */
         .btn-vila:hover { background-color: #e67e22; }
+        
+        .btn-ficha { background-color: #3c40c6; font-weight: bold; } /* Azul para a ficha */
+        .btn-ficha:hover { background-color: #575fcf; }
 
+        /* Moldura do Conteúdo */
         #content-frame {
             width: 100%;
             height: calc(100% - 60px);
@@ -78,14 +79,14 @@
             <button class="btn-nav" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
             
-            <button class="btn-nav btn-destaque" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 ABRIR FICHA</button>
+            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 Abrir Ficha</button>
         </div>
     </nav>
 
     <iframe id="content-frame" src="mapa_vila_jardim_completo.html"></iframe>
 
     <div class="info-footer">
-        Foco Estratégico: Vila Jardim (2.992 Unidades) | Boa Vista-RR
+        Área Estratégica: Residencial Vila Jardim | 2.992 Unidades
     </div>
 
     <script>
