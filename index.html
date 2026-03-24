@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Gestão Territorial - Rede de Proteção</title>
+    <title>Sistema Integrado - Rede de Proteção BV</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
         
-        /* Barra de Navegação */
         .navbar {
             display: flex;
             background-color: #1e272e;
@@ -20,39 +19,31 @@
             position: relative;
         }
 
-        .navbar h1 { margin: 0; font-size: 16px; letter-spacing: 1px; }
+        .navbar h1 { margin: 0; font-size: 14px; letter-spacing: 1px; color: #05c46b; }
 
-        /* Grupo de Botões dos Mapas */
         .menu-mapas { display: flex; gap: 5px; flex-wrap: wrap; }
         
-        .btn-mapa {
+        .btn-nav {
             background: #485460;
             color: white;
             border: none;
             padding: 8px 12px;
             cursor: pointer;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 12px;
             transition: 0.2s;
         }
 
-        .btn-mapa:hover { background: #05c46b; }
-        .btn-mapa.active { background: #05c46b; font-weight: bold; }
+        .btn-nav:hover { background: #05c46b; }
+        .btn-nav.active { background: #05c46b; font-weight: bold; }
 
-        /* Botão de Download */
-        .btn-download {
-            background-color: #ff3f34;
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-size: 13px;
+        /* Destaque para o botão da Ficha */
+        .btn-ficha {
+            background-color: #3c40c6;
             font-weight: bold;
-            transition: 0.3s;
         }
-        .btn-download:hover { background-color: #ff5e57; box-shadow: 0 0 10px rgba(255,63,52,0.5); }
+        .btn-ficha:hover { background-color: #575fcf; }
 
-        /* Iframe do Mapa */
         #content-frame {
             width: 100%;
             height: calc(100% - 60px);
@@ -65,9 +56,9 @@
             left: 15px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 10px;
             pointer-events: none;
         }
     </style>
@@ -75,31 +66,28 @@
 <body>
 
     <nav class="navbar">
-        <h1>📍 REDE DE PROTEÇÃO - BV</h1>
+        <h1>📍 REDE BV</h1>
         
         <div class="menu-mapas">
-            <button class="btn-mapa active" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
-            <button class="btn-mapa" onclick="carregar('Mapa_CREAS.html', this)">CREAS</button>
-            <button class="btn-mapa" onclick="carregar('Mapa_Conselho Tutelar.html', this)">Conselho Tutelar</button>
-            <button class="btn-mapa" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
-            <button class="btn-mapa" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
+            <button class="btn-nav active" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
+            <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this)">CREAS</button>
+            <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this)">Conselho</button>
+            <button class="btn-nav" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
+            <button class="btn-nav" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
+            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 ABRIR FICHA</button>
         </div>
-
-        <a href="Ficha de Atendimento.exe" class="btn-download">📥 Baixar Ficha (.exe)</a>
     </nav>
 
     <iframe id="content-frame" src="Mapa_CRAS.html"></iframe>
 
     <div class="info-footer">
-        Área Crítica: Residencial Vila Jardim (Cidade Satélite) - 2.992 unidades
+        Foco: Vila Jardim (Cidade Satélite)
     </div>
 
     <script>
         function carregar(url, elemento) {
             document.getElementById('content-frame').src = url;
-            
-            // Gerenciar estado visual dos botões
-            const botoes = document.querySelectorAll('.btn-mapa');
+            const botoes = document.querySelectorAll('.btn-nav');
             botoes.forEach(b => b.classList.remove('active'));
             elemento.classList.add('active');
         }
