@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha_Atendimento_SETRABES_Ajustada</title>
+    <style>
+        @page { size: A4; margin: 8mm; }
+        :root { --primary-blue: #003366; --line: #000; --bg-section: #f2f2f2; }
+        
+        body { font-family: "Arial", sans-serif; background-color: #e0e0e0; margin: 0; padding: 0; }
+        
+        .page { 
+            background: white; width: 210mm; height: 297mm; 
+            margin: 10px auto; padding: 10mm 12mm; box-sizing: border-box; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.3); position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .page-break { page-break-before: always; }
+
+        header { display: flex; align-items: center; border-bottom: 2.5px solid var(--primary-blue); padding-bottom: 8px; margin-bottom: 12px; }
+        .logo-box { width: 80px; margin-right: 15px; }
+        .logo-box img { width: 100%; height: auto; }
+        .header-text { flex-grow: 1; text-align: center; }
+        .header-text h1 { font-size: 16pt; margin: 0; color: var(--primary-blue); text-transform: uppercase; }
+        .header-text p { font-size: 8.5pt; margin: 1px 0; font-weight: bold; }
+
+        h2 { 
+            font-size: 10pt; background: var(--bg-section); border: 1px solid var(--line); 
+            padding: 5px 10px; margin: 12px 0 8px 0; text-transform: uppercase; 
+        }
+        
+        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .field { display: flex; flex-direction: column; flex: 1; min-width: 0; } /* min-width evita que a caixa estique */
+        label { font-size: 7.5pt; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; color: #111; }
+        
+        input[type="text"], input[type="date"], input[type="tel"], textarea {
+            border: 1px solid #777; padding: 6px; font-size: 10pt; width: 100%; box-sizing: border-box;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Impede que o texto empurre a caixa */
+        }
+
+        textarea { white-space: normal; overflow: auto; }
+
+        .checkbox-group { display: flex; align-items: center; gap: 15px; padding: 6px; border: 1px solid #777; background: #fff; }
+        .checkbox-item { display: flex; align-items: center; font-size: 8.5pt; font-weight: bold; }
+        .checkbox-item input { margin-right: 6px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 2px; table-layout: fixed; } /* Layout fixo garante o tamanho das colunas */
+        table th, table td { border: 1px solid #000; padding: 4px 6px; font-size: 9.5pt; overflow: hidden; } 
+        table th { background: #e2e2e2; text-align: center; text-transform: uppercase; font-size: 7.5pt; }
+        
+        .center { text-align: center; }
+        .eixo-title { background: #f9f9f9; font-weight: bold; text-align: left; padding: 8px; font-size: 9.5pt; color: var(--primary-blue); border-left: 4px solid var(--primary-blue); }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 8pt;
+            color: #333;
+            border-top: 2px solid var(--primary-blue);
+            padding-top: 10px;
+            line-height: 1.4;
+        }
+        .footer-brand { font-weight: bold; color: var(--primary-blue); font-size: 9pt; display: block; }
+
+        .print-val { display: none; font-weight: bold; border-bottom: 1px solid #ccc; min-height: 16pt; font-size: 10.5pt; word-break: break-word; }
+        .symbol { display: none; font-weight: bold; font-size: 11pt; margin-right: 5px; }
+
+        @media print {
+            .no-print { display: none !important; }
+            input, textarea { display: none !important; }
+            .print-val { display: block; }
+            .symbol { display: inline-block; }
+            body { background: white; }
+            .page { box-shadow: none; margin: 0; width: 100%; height: 100%; border: none; padding: 10mm; }
+        }
+
+        .float-btn {
+            position: fixed; bottom: 30px; right: 30px; padding: 15px 40px; 
+            background: #27ae60; color: white; border: none; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<button class="float-btn no-print" onclick="preparePrint()">💾 IMPRIMIR FICHA</button>
+
+<div class="page">
+    <header>
+        <div class="logo-box"><img src="brasao-logo-1x.png" alt="Brasão"></div>
+        <div class="header-text">
+            <h1>Ficha de Atendimento Individual</h1>
+            <p>CENTRO DE ATENDIMENTO SOCIAL (CAS/VILA JARDIM)</p>
+            <p>SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL - SETRABES</p>
+        </div>
+    </header>
+
+    <h2>01 – Identificação do Usuário</h2>
+    <div class="form-row">
+        <div class="field" style="flex: 2.5;"><label>Nome Completo</label><input type="text" id="n1"><div class="print-val" id="v1"></div></div>
+        <div class="field"><label>Nº Prontuário</label><input type="text" id="n2"><div class="print-val" id="v2"></div></div>
+    </div>
+    <div class="form-row">
+        <div class="field"><label>Data Nascimento</label><input type="date" id="n3"><div class="print-val" id="v3"></div></div>
+        <div class="field"><label>CPF</label><input type="text" id="n4"><div class="print-val" id="v4"></div></div>
+        <div class="field"><label>RG / Órgão Expedidor</label><input type="text" id="n5"><div class="print-val" id="v5"></div></div>
+    </div>
+    <div class="form-row">
+        <div class="field"><label>Telefone / WhatsApp</label><input type="tel" id="n6"><div class="print-val" id="v6"></div></div>
+        <div class="field" style="flex: 2;"><label>Endereço Completo</label><input type="text" id="n7"><div class="print-val" id="v7"></div></div>
+    </div>
+
+    <h2>02 – Perfil Socioeconômico e Benefícios</h2>
+    <div class="form-row">
+        <div class="field"><label>Escolaridade</label><input type="text" id="n8"><div class="print-val" id="v8"></div></div>
+        <div class="field"><label>Profissão / Ocupação</label><input type="text" id="n9"><div class="print-val" id="v9"></div></div>
+        <div class="field"><label>Renda Mensal</label><input type="text" id="n10"><div class="print-val" id="v10"></div></div>
+    </div>
+    <div class="form-row">
+        <div class="field" style="flex: 2.2;"><label>Benefícios Sociais</label><input type="text" id="n11"><div class="print-val" id="v11"></div></div>
+        <div class="field"><label>NIS / CadÚnico</label><input type="text" id="n12"><div class="print-val" id="v12"></div></div>
+    </div>
+    <div class="form-row">
+        <div class="field">
+            <label>Já foi acompanhado pela rede (CRAS, CREAS, etc)?</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item"><span class="symbol"></span><input type="radio" name="rede" id="r_sim"> SIM</div>
+                <div class="checkbox-item"><span class="symbol"></span><input type="radio" name="rede" id="r_nao"> NÃO</div>
+                <div class="field" style="margin-left: 10px;"><input type="text" placeholder="Qual?" id="r_qual"></div>
+            </div>
+            <div class="print-val" id="v_rede"></div>
+        </div>
+    </div>
+
+    <h2>03 – Composição Familiar</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Integrante</th>
+                <th width="55">Idade</th>
+                <th width="120">Parentesco</th>
+                <th width="100">Renda (R$)</th>
+            </tr>
+        </thead>
+        <tbody id="famTable">
+            <script>
+                for(let i=0; i<7; i++) {
+                    document.write(`<tr>
+                        <td height="28"><input type="text"><div class="print-val"></div></td>
+                        <td><input type="text"><div class="print-val"></div></td>
+                        <td><input type="text"><div class="print-val"></div></td>
+                        <td><input type="text"><div class="print-val"></div></td>
+                    </tr>`);
+                }
+            </script>
+        </tbody>
+    </table>
+
+    <footer>
+        <span class="footer-brand">SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL</span>
+        Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima – Brasil<br>
+        CEP: 69304-350 | E-mail: gabinetesetrabes@gmail.com
+    </footer>
+</div>
+
+<div class="page page-break">
+    <header>
+        <div class="header-text">
+            <h1>Monitoramento de Atividades e Parecer</h1>
+            <p>SITUAÇÃO DAS MODALIDADES E EVOLUÇÃO DO ATENDIMENTO</p>
+        </div>
+    </header>
+
+    <h2>04 – Grade de Atividades do Usuário</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Modalidade / Oficina</th>
+                <th width="80">Inscrito</th>
+                <th width="80">Frequenta</th>
+                <th width="80">Desistente</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="4" class="eixo-title">EIXO: ESPORTE E LAZER</td></tr>
+            <script>
+                ["Vôlei", "Futsal", "Jiu-Jitsu", "Treinamento Funcional", "Ginástica"].forEach(it => {
+                    document.write(`<tr class="at-row"><td>${it}</td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td></tr>`);
+                });
+            </script>
+            <tr><td colspan="4" class="eixo-title">EIXO: CULTURA, ARTES E CAPACITAÇÃO</td></tr>
+            <script>
+                ["Música / Canto", "Violão", "Dança / Ritmos", "Artesanato", "Informática"].forEach(it => {
+                    document.write(`<tr class="at-row"><td>${it}</td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td><td class="center"><span class="symbol"></span><input type="radio" name="${it}"></td></tr>`);
+                });
+            </script>
+        </tbody>
+    </table>
+
+    <h2>05 – Parecer Técnico e Evolução</h2>
+    <textarea id="parecer" rows="11" placeholder="Digite o parecer..."></textarea>
+    <div class="print-val" id="v_parecer" style="white-space: pre-wrap; min-height: 280px; border: 1px solid #ccc; padding: 10px; line-height: 1.5;"></div>
+
+    <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div class="field" style="flex: 0.35;">
+            <label>Data</label>
+            <input type="date" id="dat"><div class="print-val" id="vdat"></div>
+        </div>
+        <div style="border-top: 1.5px solid #000; width: 320px; text-align: center; padding-top: 5px; font-weight: bold; font-size: 8.5pt;">
+            Assinatura e Carimbo do Profissional
+        </div>
+    </div>
+
+    <footer>
+        <span class="footer-brand">SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL</span>
+        Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima – Brasil<br>
+        CEP: 69304-350 | E-mail: gabinetesetrabes@gmail.com
+    </footer>
+</div>
+
+<script>
+    function preparePrint() {
+        for(let i=1; i<=12; i++) {
+            const inp = document.getElementById('n'+i);
+            const out = document.getElementById('v'+i);
+            if(inp && out) {
+                if(inp.type === 'date' && inp.value) out.innerText = inp.value.split('-').reverse().join('/');
+                else out.innerText = inp.value || "___________________________";
+            }
+        }
+        
+        const rSim = document.getElementById('r_sim').checked;
+        const rQual = document.getElementById('r_qual').value;
+        document.getElementById('v_rede').innerText = rSim ? "SIM (Equipamento: " + (rQual || "Não especificado") + ")" : "NÃO";
+
+        document.getElementById('v_parecer').innerText = document.getElementById('parecer').value || "Nenhuma observação.";
+        const datInp = document.getElementById('dat');
+        document.getElementById('vdat').innerText = datInp.value ? datInp.value.split('-').reverse().join('/') : "__/__/____";
+
+        document.querySelectorAll('tr, .checkbox-item').forEach(el => {
+            el.querySelectorAll('input[type="text"]').forEach((inp, idx) => {
+                const dv = el.querySelectorAll('.print-val')[idx];
+                if(dv) dv.innerText = inp.value;
+            });
+            el.querySelectorAll('input[type="radio"]').forEach(r => {
+                if(r.previousElementSibling && r.previousElementSibling.classList.contains('symbol')) {
+                    r.previousElementSibling.innerText = r.checked ? "☑" : "☐";
+                }
+            });
+        });
+
+        window.print();
+    }
+</script>
+</body>
+</html>
