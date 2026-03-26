@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Territorial - Cidade Satélite</title>
+    <style>
+        :root {
+            --primary-blue: #004a8d;
+            --secondary-gray: #6c757d;
+            --light-bg: #f4f7f6;
+            --accent-orange: #e67e22;
+            --highlight-yellow: #fff3cd;
+            --danger-red: #c0392b;
+            --success-green: #28a745;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; margin: 20px; background-color: var(--light-bg); color: #333; }
+
+        .no-print { 
+            background: white; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6; 
+            margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        input[type="text"] { flex: 1; min-width: 250px; padding: 12px; border: 2px solid var(--primary-blue); border-radius: 4px; outline: none; }
+
+        button { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-search { background: var(--primary-blue); color: white; }
+        .btn-3d { background: var(--accent-orange); color: white; }
+        .btn-print { background: var(--secondary-gray); color: white; }
+        .btn-reset { background: var(--danger-red); color: white; }
+        .btn-save { background: var(--success-green); color: white; }
+
+        #painel-gestao { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+
+        .sidebar { 
+            flex: 1; min-width: 320px; background: white; border: 1px solid var(--primary-blue); 
+            border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .registro-container { margin-bottom: 20px; }
+        textarea { width: 100%; min-height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-top: 8px; font-family: inherit; resize: vertical; }
+        
+        .historico-container { border-top: 1px solid #eee; padding-top: 15px; }
+        .historico-titulo { font-size: 0.9rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 10px; }
+        .lista-enderecos { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; }
+        
+        .item-endereco { display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+        .end-text { flex-grow: 1; cursor: pointer; }
+        .item-endereco:hover { background: #f0f4f8; }
+        .item-destaque { background: var(--highlight-yellow) !important; font-weight: bold; border-left: 4px solid var(--accent-orange); }
+
+        .btn-action { background: none; border: none; padding: 5px; cursor: pointer; font-size: 1rem; margin-left: 5px; }
+        .btn-star { color: #ccc; }
+        .btn-star.active { color: var(--accent-orange); }
+        .btn-del { color: #ddd; transition: 0.2s; }
+        .btn-del:hover { color: var(--danger-red); }
+
+        .mapa-container { flex: 2.5; min-width: 500px; border-radius: 8px; overflow: hidden; border: 1px solid #dee2e6; background: #fff; }
+        .header-mapa { background: var(--primary-blue); color: white; padding: 12px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; }
+
+        .footer-tecnico { margin-top: 20px; font-size: 0.85rem; color: #333; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.5; }
+
+        @media print {
+            .no-print, .btn-action, .btn-del { display: none !important; }
+            #painel-gestao { display: block !important; }
+            .sidebar { width: 100%; border: 1px solid #000; margin-bottom: 20px; }
+            textarea { border: none; padding: 0; overflow: visible; height: auto; }
+            iframe { height: 500px !important; border: 1px solid #ccc !important; }
+        }
+    </style>
+</head>
+<body onload="carregarDados()">
+
+    <div class="no-print">
+        <div class="search-row">
+            <input type="text" id="campoBusca" placeholder="Rua, número ou família em Cidade Satélite...">
+            <button class="btn-search" onclick="adicionarConsultado()">LOCALIZAR</button>
+            <button class="btn-3d" onclick="abrir3D()">📍 MAPS 3D</button>
+            <button class="btn-save" onclick="salvarDados()">💾 SALVAR DADOS</button>
+            <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR</button>
+            <button class="btn-reset" onclick="limparTudo()">LIMPAR TUDO</button>
+        </div>
+    </div>
+
+    <section id="painel-gestao">
+        <aside class="sidebar">
+            <h2 style="color: var(--primary-blue); margin: 0 0 10px 0; font-size: 1.2rem; border-bottom: 2px solid var(--primary-blue);">MONITORAMENTO TERRITORIAL</h2>
+            
+            <div class="registro-container">
+                <label style="font-size: 0.85rem; font-weight: bold;">NOTAS TÉCNICAS / PARECER:</label>
+                <textarea id="obsFamilias" placeholder="Registe aqui as observações sobre a família e território no Cidade Satélite..."></textarea>
+            </div>
+
+            <div class="historico-container">
+                <div class="historico-titulo">📍 ENDEREÇOS CONSULTADOS NO BAIRRO</div>
+                <ul id="listaEnderecos" class="lista-enderecos"></ul>
+            </div>
+
+            <div class="footer-tecnico">
+                <strong>Equipe Técnica</strong><br>
+                Centro de Atendimento Social (CAS)
+            </div>
+        </aside>
+
+        <main class="mapa-container">
+            <div class="header-mapa">Setor de Atuação: Cidade Satélite</div>
+            <iframe id="mapaCentral" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15947.382092570082!2d-60.7513554!3d2.8601835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8d9305106720272b%3A0xc68291f0928e1610!2sCidade%20Sat%C3%A9lite%2C%20Boa%20Vista%20-%20RR!5e0!3m2!1spt-BR!2sbr!4v1711464000000!5m2!1spt-BR!2sbr" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </main>
+    </section>
+
+    <script>
+        const localidade = ", Cidade Satélite, Boa Vista, RR";
+        const mapa = document.getElementById('mapaCentral');
+
+        function adicionarConsultado() {
+            const endereco = document.getElementById('campoBusca').value;
+            if (!endereco) return;
+            const query = encodeURIComponent(endereco + localidade);
+            mapa.src = `https://www.google.com/maps?q=${query}&output=embed`;
+
+            const lista = document.getElementById('listaEnderecos');
+            const li = criarElementoEndereco(endereco);
+            lista.prepend(li);
+        }
+
+        function criarElementoEndereco(texto, destaque = false) {
+            const li = document.createElement('li');
+            li.className = destaque ? 'item-endereco item-destaque' : 'item-endereco';
+            li.innerHTML = `
+                <span class="end-text" onclick="reverMapa('${texto}')">${texto}</span>
+                <button class="btn-action btn-star ${destaque ? 'active' : ''}" onclick="toggleDestaque(this)">★</button>
+                <button class="btn-action btn-del" onclick="removerEndereco(this)">✖</button>
+            `;
+            return li;
+        }
+
+        function reverMapa(end) {
+            document.getElementById('campoBusca').value = end;
+            const query = encodeURIComponent(end + localidade);
+            mapa.src = `https://www.google.com/maps?q=${query}&output=embed`;
+        }
+
+        function toggleDestaque(btn) {
+            btn.parentElement.classList.toggle('item-destaque');
+            btn.classList.toggle('active');
+        }
+
+        function removerEndereco(btn) {
+            btn.parentElement.remove();
+        }
+
+        function abrir3D() {
+            const end = document.getElementById('campoBusca').value || "Cidade Satélite, Boa Vista, RR";
+            window.open(`https://www.google.com.br/maps/search/${encodeURIComponent(end + localidade)}`, '_blank');
+        }
+
+        // --- FUNÇÕES DE PERSISTÊNCIA (SALVAR/CARREGAR) ---
+
+        function salvarDados() {
+            const notas = document.getElementById('obsFamilias').value;
+            const enderecos = [];
+            document.querySelectorAll('#listaEnderecos li').forEach(li => {
+                enderecos.push({
+                    texto: li.querySelector('.end-text').innerText,
+                    destaque: li.classList.contains('item-destaque')
+                });
+            });
+
+            const dadosAtendimento = { notas, enderecos };
+            localStorage.setItem('atendimento_satelite', JSON.stringify(dadosAtendimento));
+            alert("Dados salvos com sucesso no navegador!");
+        }
+
+        function carregarDados() {
+            const salvos = localStorage.getItem('atendimento_satelite');
+            if (salvos) {
+                const dados = JSON.parse(salvos);
+                document.getElementById('obsFamilias').value = dados.notas;
+                const lista = document.getElementById('listaEnderecos');
+                lista.innerHTML = "";
+                dados.enderecos.forEach(item => {
+                    const li = criarElementoEndereco(item.texto, item.destaque);
+                    lista.appendChild(li); // Adiciona na ordem salva
+                });
+            }
+        }
+
+        function limparTudo() {
+            if(confirm("Deseja apagar TUDO (inclusive o que foi salvo no navegador)?")) {
+                localStorage.removeItem('atendimento_satelite');
+                document.getElementById('campoBusca').value = "";
+                document.getElementById('obsFamilias').value = "";
+                document.getElementById('listaEnderecos').innerHTML = "";
+                alert("Memória limpa.");
+            }
+        }
+
+        document.getElementById('campoBusca').addEventListener('keypress', (e) => { if(e.key === 'Enter') adicionarConsultado(); });
+    </script>
+</body>
+</html>
