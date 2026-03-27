@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Gestão Territorial - CAS</title>
+    <title>Painel CAS - Gestão Territorial</title>
     
     <script>
         if (sessionStorage.getItem('logado_bv') !== 'true') {
@@ -15,148 +15,126 @@
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
             font-family: 'Segoe UI', sans-serif; overflow: hidden; background-color: #1e272e; 
-            display: flex; /* Alinha o conteúdo em colunas/linhas */
+            display: flex; 
         }
         
-        /* Layout Principal */
-        .main-container {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
-
-        /* Área do Conteúdo (Esquerda) */
-        #content-frame { 
-            flex: 1; /* Ocupa todo o espaço restante */
-            border: none; 
-            background: #f1f2f6; 
-            transition: opacity 0.3s ease; 
-        }
-
-        /* Barra Lateral Direita */
-        .sidebar-right {
-            width: 220px;
+        /* Barra Lateral Esquerda */
+        .sidebar-left {
+            width: 260px;
             background: #1e272e;
-            border-left: 2px solid #05c46b;
+            border-right: 2px solid #05c46b;
             display: flex;
             flex-direction: column;
             padding: 15px;
-            gap: 8px;
-            box-shadow: -4px 0 12px rgba(0,0,0,0.5);
-            overflow-y: auto; /* Permite rolar os botões se houver muitos */
+            gap: 6px;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            z-index: 1000;
         }
 
-        .sidebar-right h1 { 
-            font-size: 14px; 
-            color: #05c46b; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 10px;
+        .sidebar-left h1 { 
+            font-size: 14px; color: #05c46b; text-transform: uppercase; 
+            font-weight: 800; margin-bottom: 20px; text-align: center;
+            border-bottom: 1px solid #34495e; padding-bottom: 10px;
         }
 
-        /* Botões da Lateral */
-        .btn-nav {
-            background: #485460; 
-            color: white; 
-            border: none; 
-            padding: 12px;
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-size: 11px; 
-            font-weight: 700;
-            transition: 0.2s; 
-            text-transform: uppercase;
-            text-align: left;
+        /* Área do Conteúdo e Rodapé Oficial */
+        .main-content {
+            flex: 1;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+
+        #content-frame { 
+            flex: 1; 
+            border: none; 
+            background: #f1f2f6; 
+        }
+
+        /* Rodapé Institucional SETRABES */
+        .setrabes-footer {
+            background: #f8f9fa;
+            color: #2f3640;
+            padding: 10px 20px;
+            border-top: 1px solid #dcdde1;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .setrabes-footer strong { color: #05c46b; text-transform: uppercase; }
+
+        /* Botões da Navegação */
+        .btn-nav {
+            background: #485460; color: white; border: none; padding: 12px;
+            cursor: pointer; border-radius: 6px; font-size: 10px; font-weight: 700;
+            transition: 0.2s; text-transform: uppercase; text-align: left;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .btn-nav:hover { background: #05c46b; color: #1e272e; }
         .btn-nav.active { background: #05c46b; color: #1e272e; box-shadow: 0 0 10px rgba(5, 196, 107, 0.4); }
 
-        /* Cores de Destaque */
-        .btn-prioridade { background: #34495e; border-left: 4px solid #05c46b; }
+        .btn-prioridade { border-left: 4px solid #05c46b; background: #34495e; }
         .btn-google-form { background: #27ae60 !important; color: white; }
-        .btn-google-sheet { background: #2980b9 !important; color: white; }
-
+        .btn-google-sheet { background: #2980b9 !important; color: white; margin-bottom: 15px; }
+        
         .btn-sair { 
-            background: #eb3b5a; 
-            color: white; 
-            border: none; 
-            padding: 12px; 
-            border-radius: 6px; 
-            font-size: 11px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            margin-top: auto; /* Empurra o botão sair para o final */
-            text-align: center;
+            background: #eb3b5a; color: white; border: none; padding: 12px; 
+            border-radius: 6px; font-size: 11px; font-weight: 800; 
+            cursor: pointer; margin-top: auto; text-align: center; 
         }
 
-        /* Rodapé Informativo */
-        .info-footer {
-            position: absolute; bottom: 15px; left: 15px;
-            background: rgba(30, 39, 46, 0.9); color: white; padding: 6px 15px;
-            border-radius: 20px; font-size: 10px; border: 1px solid #05c46b;
-            pointer-events: none;
-        }
-
-        /* Responsividade para Celular (vira barra inferior) */
         @media (max-width: 800px) {
-            .main-container { flex-direction: column; }
-            .sidebar-right { width: 100%; height: auto; border-left: none; border-top: 2px solid #05c46b; order: 2; flex-direction: row; flex-wrap: wrap; }
-            #content-frame { order: 1; height: 60vh; }
-            .btn-sair { margin-top: 0; }
+            body { flex-direction: column; }
+            .sidebar-left { width: 100%; height: auto; border-right: none; border-bottom: 2px solid #05c46b; flex-direction: row; flex-wrap: wrap; }
+            .setrabes-footer { font-size: 9px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <nav class="sidebar-left">
+        <h1>📍 Painel CAS</h1>
+        
+        <button class="btn-nav btn-prioridade active" onclick="carregar('vila-jardim.html', this)">🏘️ Vila Jardim</button>
+        <button class="btn-nav btn-prioridade" onclick="carregar('cidade-satelite.html', this)">🛰️ Satélite</button>
+        
+        <button class="btn-nav btn-google-form" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this)">📝 Abrir Ficha</button>
+        <button class="btn-nav btn-google-sheet" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this)">📊 Planilha de Dados</button>
+        
+        <button class="btn-nav" onclick="carregar('cras.html', this)">🏢 CRAS</button>
+        <button class="btn-nav" onclick="carregar('creas.html', this)">🏢 CREAS</button>
+        <button class="btn-nav" onclick="carregar('conselho-tutelar.html', this)">🛡️ Conselho Tutelar</button>
+        <button class="btn-nav" onclick="carregar('defensoria.html', this)">⚖️ Defensoria</button>
+        <button class="btn-nav" onclick="carregar('raps.html', this)">🧠 RAPS</button>
+        <button class="btn-nav" onclick="carregar('ficha-atendimento.html', this)">📄 Ficha Interna</button>
+        
+        <button class="btn-sair" onclick="logout()">SAIR</button>
+    </nav>
+
+    <main class="main-content">
         <iframe id="content-frame" src="vila-jardim.html"></iframe>
 
-        <nav class="sidebar-right">
-            <h1>📍 Painel CAS</h1>
-            
-            <button class="btn-nav btn-prioridade active" onclick="carregar('vila-jardim.html', this, 'Mapa Vila Jardim')">🏘️ Vila Jardim</button>
-            <button class="btn-nav btn-prioridade" onclick="carregar('cidade-satelite.html', this, 'Mapa Cidade Satélite')">🛰️ Satélite</button>
-            <button class="btn-nav btn-google-form" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this, 'Formulário de Atendimento')">📝 Abrir Ficha</button>
-            
-            <button class="btn-nav btn-google-sheet" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this, 'Base de Dados CAS')">📊 Planilha de Dados</button>
-            
-            <button class="btn-nav" onclick="carregar('cras.html', this, 'Mapa Rede CRAS')">🏢 CRAS</button>
-            <button class="btn-nav" onclick="carregar('creas.html', this, 'Mapa Rede CREAS')">🏢 CREAS</button>
-            <button class="btn-nav" onclick="carregar('conselho-tutelar.html', this, 'Mapa Conselho Tutelar')">🛡️ Conselho</button>
-            <button class="btn-nav" onclick="carregar('defensoria.html', this, 'Mapa Defensoria')">⚖️ Defensoria</button>
-            <button class="btn-nav" onclick="carregar('raps.html', this, 'Mapa Rede RAPS')">🧠 RAPS</button>
-            
-            <button class="btn-sair" onclick="logout()">SAIR DO SISTEMA</button>
-        </nav>
-    </div>
-
-    <div class="info-footer">
-        Foco: <strong id="foco-nome">Mapa Vila Jardim</strong>
-    </div>
+        <footer class="setrabes-footer">
+            <strong>Secretaria de Estado do Trabalho e Bem-Estar Social</strong><br>
+            Avenida Mário Homem de Melo, nº 2310, Mecejana - Boa Vista - Roraima – Brasil - CEP: 69304-350<br>
+            E-mail: gabinetesetrabes@gmail.com
+        </footer>
+    </main>
 
     <script>
-        function carregar(url, elemento, nomeFoco) {
+        function carregar(url, elemento) {
             const frame = document.getElementById('content-frame');
-            frame.style.opacity = '0';
-            
-            setTimeout(() => {
-                frame.src = url;
-                document.getElementById('foco-nome').innerText = nomeFoco;
-                document.querySelectorAll('.btn-nav').forEach(btn => btn.classList.remove('active'));
-                elemento.classList.add('active');
-                frame.style.opacity = '1';
-            }, 200);
+            frame.src = url;
+            document.querySelectorAll('.btn-nav').forEach(btn => btn.classList.remove('active'));
+            elemento.classList.add('active');
         }
 
         function logout() {
-            if(confirm("Deseja sair do sistema?")) {
+            if(confirm("Deseja encerrar a sessão?")) {
                 sessionStorage.clear();
                 window.location.href = "login.html";
             }
