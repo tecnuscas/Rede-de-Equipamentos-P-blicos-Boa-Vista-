@@ -14,108 +14,94 @@
     <style>
         :root {
             --primary: #05c46b;
-            --primary-glow: rgba(5, 196, 107, 0.3);
+            --primary-glow: rgba(5, 196, 107, 0.4);
             --bg-dark: #1e272e;
             --sidebar-bg: #161d23;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-main: #f1f2f6;
-            --text-dim: #a4b0be;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
             --accent-blue: #0fbcf9;
             --danger: #eb3b5a;
         }
 
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             overflow: hidden; background-color: var(--bg-dark); 
             display: flex; 
         }
         
-        /* Barra Lateral Refinada */
+        /* Barra Lateral */
         .sidebar {
-            width: 300px; background: var(--sidebar-bg);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            width: 330px; background: var(--sidebar-bg);
+            border-right: 3px solid var(--primary);
             display: flex; flex-direction: column; padding: 25px 15px;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.4);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
             overflow-y: auto; z-index: 10;
         }
 
-        .sidebar-header {
-            text-align: center; margin-bottom: 30px;
-            padding-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1);
-        }
-
         .sidebar-header h1 { 
-            font-size: 13px; color: var(--primary); text-transform: uppercase; 
-            letter-spacing: 2px; margin: 0; font-weight: 900;
+            font-size: 18px; color: var(--primary); text-transform: uppercase; 
+            text-align: center; margin-bottom: 25px; font-weight: 900;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;
         }
 
-        /* Menu de Navegação */
-        .nav-group { margin-bottom: 20px; }
+        /* Menu */
+        .nav-group { margin-bottom: 25px; }
         .nav-label { 
-            font-size: 9px; color: var(--text-dim); text-transform: uppercase; 
-            margin-left: 10px; margin-bottom: 8px; letter-spacing: 1px;
+            font-size: 13px; color: var(--primary); text-transform: uppercase; 
+            margin-bottom: 12px; font-weight: 800; border-left: 4px solid var(--primary); 
+            padding-left: 10px; display: block;
         }
 
-        .nav-item {
-            display: flex; margin-bottom: 6px; gap: 2px;
-            transition: transform 0.2s;
-        }
-        .nav-item:hover { transform: translateX(5px); }
+        .nav-item { display: flex; margin-bottom: 10px; gap: 4px; }
 
         .btn-nav {
             flex: 1; background: var(--card-bg); color: var(--text-main); 
-            border: none; padding: 12px 15px; cursor: pointer; border-radius: 8px 0 0 8px; 
-            font-size: 11px; font-weight: 600; transition: 0.3s; 
+            border: 1px solid rgba(255,255,255,0.05); padding: 15px; 
+            cursor: pointer; border-radius: 8px 0 0 8px; 
+            font-size: 14px; font-weight: 700; transition: 0.2s; 
             text-align: left; display: flex; align-items: center; gap: 12px;
         }
 
         .btn-pop {
-            background: rgba(255,255,255,0.08); color: var(--text-dim); border: none;
-            padding: 0 12px; cursor: pointer; border-radius: 0 8px 8px 0;
-            transition: 0.3s; font-size: 14px;
+            background: rgba(255,255,255,0.15); color: var(--text-main); border: none;
+            padding: 0 18px; cursor: pointer; border-radius: 0 8px 8px 0;
+            transition: 0.2s; font-size: 20px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* Estados Ativos e Hover */
+        /* Efeitos */
+        .nav-item:hover .btn-nav { background: rgba(255,255,255,0.2); }
         .nav-item.active .btn-nav { 
             background: var(--primary); color: #000; 
-            box-shadow: 0 0 15px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
-        .btn-nav:hover, .btn-pop:hover { background: var(--primary); color: #000; }
+        .btn-pop:hover { background: var(--accent-blue); color: #000; }
 
-        .btn-form { border-left: 4px solid var(--primary); }
-        .btn-sheet { border-left: 4px solid var(--accent-blue); }
+        .btn-form { border-left: 6px solid var(--primary); }
+        .btn-sheet { border-left: 6px solid var(--accent-blue); }
 
-        /* Rodapé da Sidebar */
         .btn-sair { 
-            background: rgba(235, 59, 90, 0.1); color: var(--danger); 
-            border: 1px solid var(--danger); padding: 12px; 
-            border-radius: 8px; font-size: 11px; font-weight: 800; 
-            cursor: pointer; margin-top: auto; transition: 0.3s;
-            text-transform: uppercase;
+            background: var(--danger); color: white; border: none; padding: 16px; 
+            border-radius: 8px; font-size: 14px; font-weight: 900; 
+            cursor: pointer; margin-top: auto; text-transform: uppercase;
         }
-        .btn-sair:hover { background: var(--danger); color: white; }
 
-        /* Área de Conteúdo */
-        .wrapper { flex: 1; display: flex; flex-direction: column; background: #000; }
-        #content-frame { flex: 1; border: none; background: #f1f2f6; }
+        /* Área Principal */
+        .wrapper { flex: 1; display: flex; flex-direction: column; }
+        #content-frame { flex: 1; border: none; background: #ffffff; }
 
-        /* Rodapé Institucional */
+        /* Rodapé Institucional Ampliado */
         .footer-brand {
-            background: #ffffff; color: #2d3436; padding: 15px;
-            font-size: 10px; text-align: center; border-top: 3px solid var(--primary);
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            background: #ffffff; color: #1e272e; padding: 20px;
+            font-size: 14px; text-align: center; border-top: 5px solid var(--primary);
+            line-height: 1.6;
         }
-        .footer-brand strong { color: #000; display: block; margin-bottom: 2px; }
-
-        /* Scrollbar Custom */
-        .sidebar::-webkit-scrollbar { width: 5px; }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .footer-brand strong { font-size: 16px; display: block; margin-bottom: 4px; color: #000; }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .btn-pop { display: none; }
+            .sidebar { width: 100%; height: auto; border-right: none; }
         }
     </style>
 </head>
@@ -130,7 +116,7 @@
             <div class="nav-label">Territórios</div>
             <div class="nav-item active">
                 <button class="btn-nav" onclick="carregar('vila-jardim.html', this.parentElement)">🏘️ Mapa Vila Jardim</button>
-                <button class="btn-pop" onclick="abrirNova('vila-jardim.html')" title="Tela Cheia">↗</button>
+                <button class="btn-pop" onclick="abrirNova('vila-jardim.html')">↗</button>
             </div>
             <div class="nav-item">
                 <button class="btn-nav" onclick="carregar('cidade-satelite.html', this.parentElement)">🛰️ Mapa Cidade Satélite</button>
@@ -160,7 +146,7 @@
             <div class="nav-item"><button class="btn-nav" onclick="carregar('ficha-atendimento.html', this.parentElement)">📄 Atendimento Individual</button><button class="btn-pop" onclick="abrirNova('ficha-atendimento.html')">↗</button></div>
         </div>
         
-        <button class="btn-sair" onclick="logout()">Sair do Sistema</button>
+        <button class="btn-sair" onclick="logout()">Encerrar Sessão</button>
     </aside>
 
     <div class="wrapper">
@@ -168,19 +154,23 @@
 
         <footer class="footer-brand">
             <strong>SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL - SETRABES</strong>
-            Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - RR | CEP: 69304-350<br>
-            Contato Institucional: gabinetesetrabes@gmail.com
+            Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima – Brasil - CEP: 69304-350<br>
+            E-mail: gabinetesetrabes@gmail.com
         </footer>
     </div>
 
     <script>
         function carregar(url, elemento) {
             const frame = document.getElementById('content-frame');
-            frame.style.opacity = '0.5';
-            setTimeout(() => {
+            
+            // Aplica Cache Buster apenas para arquivos locais do repositório
+            if (!url.startsWith('http')) {
+                const sep = url.includes('?') ? '&' : '?';
+                frame.src = url + sep + 'v=' + new Date().getTime();
+            } else {
                 frame.src = url;
-                frame.style.opacity = '1';
-            }, 150);
+            }
+
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             elemento.classList.add('active');
         }
@@ -190,7 +180,7 @@
         }
 
         function logout() {
-            if(confirm("Deseja realmente encerrar a sessão de trabalho?")) {
+            if(confirm("Deseja encerrar a sessão?")) {
                 sessionStorage.clear();
                 window.location.href = "login.html";
             }
