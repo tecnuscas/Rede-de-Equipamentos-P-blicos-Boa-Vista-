@@ -14,7 +14,7 @@
         .form-control:focus { background: #2f3640; border-color: #05c46b; color: white; box-shadow: 0 0 8px rgba(5, 196, 107, 0.3); }
         .btn-entrar { background: #05c46b; color: #1e272e; border: none; width: 100%; padding: 14px; font-weight: 800; margin-top: 20px; transition: 0.3s; border-radius: 8px; }
         .btn-entrar:hover { background: #049f58; transform: translateY(-2px); }
-        .error-msg { color: #eb3b5a; font-size: 0.85rem; text-align: center; margin-top: 15px; display: none; }
+        .error-msg { color: #eb3b5a; font-size: 0.85rem; text-align: center; margin-top: 15px; display: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -26,7 +26,7 @@
                 <input type="text" id="user" class="form-control" placeholder="Usuário Técnico" required autocomplete="off">
             </div>
             <div class="mb-3">
-                <input type="password" id="pass" class="form-control" placeholder="Senha de Acesso" required>
+                <input type="password" id="pass" class="form-control" placeholder="Senha" required>
             </div>
             <button type="submit" class="btn-entrar">ENTRAR NO SISTEMA</button>
             <div id="error" class="error-msg">⚠️ Usuário ou senha incorretos!</div>
