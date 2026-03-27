@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Gestão Territorial - Boa Vista</title>
+    
+    <script>
+        // Se não houver a chave de acesso da BV, volta para o login específico
+        if (sessionStorage.getItem('logado_bv') !== 'true') {
+            window.location.href = "login-bv.html";
+        }
+    </script>
+
     <style>
         /* Reset e Estrutura Base */
         body, html { 
@@ -42,6 +50,7 @@
             display: flex; 
             gap: 8px; 
             flex-wrap: wrap; 
+            align-items: center;
         }
         
         .btn-nav {
@@ -70,10 +79,25 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
+        /* Botão Sair - Rede BV */
+        .btn-sair {
+            background-color: #eb3b5a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-sair:hover { background-color: #ff4d4d; }
+
         /* Cores de Destaque */
         .btn-vila { background-color: #d35400; } 
         .btn-satelite { background-color: #2980b9; } 
-        .btn-destaque { background-color: #3c40c6; } /* Cor para novos serviços */
+        .btn-destaque { background-color: #3c40c6; } 
         .btn-ficha { background-color: #27ae60; } 
 
         /* Container do Mapa */
@@ -133,6 +157,10 @@
             <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this, 'Ficha de Atendimento')">
                 📄 Abrir Ficha
             </button>
+
+            <button class="btn-sair" onclick="logout()">
+                SAIR
+            </button>
         </div>
     </nav>
 
@@ -158,6 +186,12 @@
             const botoes = document.querySelectorAll('.btn-nav');
             botoes.forEach(btn => btn.classList.remove('active'));
             elemento.classList.add('active');
+        }
+
+        // FUNÇÃO LOGOUT ESPECÍFICA PARA REDE BV
+        function logout() {
+            sessionStorage.removeItem('logado_bv');
+            window.location.href = "login-bv.html";
         }
 
         window.onbeforeunload = function() {
