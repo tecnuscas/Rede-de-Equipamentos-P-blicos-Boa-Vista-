@@ -6,126 +6,59 @@
     <title>Painel de Gestão Territorial - Boa Vista</title>
     
     <script>
-        // Se não houver a chave de acesso da BV, volta para o login específico
         if (sessionStorage.getItem('logado_bv') !== 'true') {
             window.location.href = "login-bv.html";
         }
     </script>
 
     <style>
-        /* Reset e Estrutura Base */
         body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
+            margin: 0; padding: 0; height: 100%; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            overflow: hidden; 
-            background-color: #1e272e;
+            overflow: hidden; background-color: #1e272e;
         }
         
-        /* Barra de Navegação */
         .navbar {
-            display: flex;
-            background-color: #1e272e;
-            color: white;
-            padding: 10px 20px;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-            z-index: 1000;
-            position: relative;
-            border-bottom: 2px solid #05c46b;
+            display: flex; background-color: #1e272e; color: white;
+            padding: 10px 20px; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4); z-index: 1000;
+            position: relative; border-bottom: 2px solid #05c46b;
         }
 
-        .navbar h1 { 
-            margin: 0; 
-            font-size: 16px; 
-            letter-spacing: 1px; 
-            color: #05c46b;
-            text-transform: uppercase;
-        }
+        .navbar h1 { margin: 0; font-size: 16px; color: #05c46b; text-transform: uppercase; }
 
-        /* Menu de Botões */
-        .menu-items { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap; 
-            align-items: center;
-        }
+        .menu-items { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
         
         .btn-nav {
-            background: #485460;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            background: #485460; color: white; border: none; padding: 8px 12px;
+            cursor: pointer; border-radius: 6px; font-size: 11px; font-weight: 600;
+            transition: 0.3s; text-transform: uppercase; display: flex; align-items: center; gap: 5px;
         }
 
-        .btn-nav:hover { 
-            background: #05c46b; 
-            transform: translateY(-2px);
-        }
+        .btn-nav:hover { background: #05c46b; transform: translateY(-2px); }
+        .btn-nav.active { background: #05c46b; }
 
-        .btn-nav.active { 
-            background: #05c46b; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-        }
-
-        /* Botão Sair - Rede BV */
         .btn-sair {
-            background-color: #eb3b5a;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
+            background-color: #eb3b5a; color: white; border: none; padding: 8px 12px;
+            border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.3s;
         }
         .btn-sair:hover { background-color: #ff4d4d; }
 
-        /* Cores de Destaque */
         .btn-vila { background-color: #d35400; } 
         .btn-satelite { background-color: #2980b9; } 
         .btn-destaque { background-color: #3c40c6; } 
         .btn-ficha { background-color: #27ae60; } 
 
-        /* Container do Mapa */
-        #content-frame {
-            width: 100%;
-            height: calc(100% - 62px);
-            border: none;
-            background-color: #f1f2f6;
-            transition: opacity 0.2s;
-        }
+        #content-frame { width: 100%; height: calc(100% - 62px); border: none; background-color: #f1f2f6; transition: opacity 0.2s; }
 
-        /* Rodapé Informativo */
         .info-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(30, 39, 46, 0.9);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 11px;
-            pointer-events: none;
-            border: 1px solid #05c46b;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(30, 39, 46, 0.9); color: white; padding: 8px 15px;
+            border-radius: 30px; font-size: 11px; border: 1px solid #05c46b;
         }
 
         @media (max-width: 1100px) {
-            .navbar { flex-direction: column; gap: 10px; padding: 10px; }
+            .navbar { flex-direction: column; gap: 10px; }
             #content-frame { height: calc(100% - 150px); }
         }
     </style>
@@ -134,33 +67,16 @@
 
     <nav class="navbar">
         <h1>📍 Rede de Proteção BV</h1>
-        
         <div class="menu-items">
-            <button class="btn-nav btn-vila active" onclick="carregar('Mapa Vila Jardim.html', this, 'Residencial Vila Jardim')">
-                🏘️ Vila Jardim
-            </button>
-            <button class="btn-nav btn-satelite" onclick="carregar('Bairro Cidade Satélite.html', this, 'Cidade Satélite')">
-                🛰️ Cidade Satélite
-            </button>
-
+            <button class="btn-nav btn-vila active" onclick="carregar('Mapa Vila Jardim.html', this, 'Residencial Vila Jardim')">🏘️ Vila Jardim</button>
+            <button class="btn-nav btn-satelite" onclick="carregar('Bairro Cidade Satélite.html', this, 'Cidade Satélite')">🛰️ Cidade Satélite</button>
             <button class="btn-nav" onclick="carregar('Mapa_CRAS.html', this, 'Rede CRAS')">CRAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this, 'Rede CREAS')">CREAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this, 'Conselho Tutelar')">Conselho</button>
-            
-            <button class="btn-nav btn-destaque" onclick="carregar('Mapa_Defensoria.html', this, 'Defensoria Pública')">
-                ⚖️ Defensoria
-            </button>
-            <button class="btn-nav btn-destaque" onclick="carregar('Mapa_RAPS.html', this, 'Rede RAPS')">
-                🧠 RAPS
-            </button>
-            
-            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this, 'Ficha de Atendimento')">
-                📄 Abrir Ficha
-            </button>
-
-            <button class="btn-sair" onclick="logout()">
-                SAIR
-            </button>
+            <button class="btn-nav btn-destaque" onclick="carregar('Mapa_Defensoria.html', this, 'Defensoria Pública')">⚖️ Defensoria</button>
+            <button class="btn-nav btn-destaque" onclick="carregar('Mapa_RAPS.html', this, 'Rede RAPS')">🧠 RAPS</button>
+            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this, 'Ficha de Atendimento')">📄 Abrir Ficha</button>
+            <button class="btn-sair" onclick="logout()">SAIR</button>
         </div>
     </nav>
 
@@ -173,30 +89,20 @@
     <script>
         function carregar(url, elemento, nomeFoco) {
             const frame = document.getElementById('content-frame');
-            const focoTexto = document.getElementById('foco-nome');
-            
             frame.style.opacity = '0.3';
-            
             setTimeout(() => {
                 frame.src = url;
-                focoTexto.innerText = nomeFoco;
+                document.getElementById('foco-nome').innerText = nomeFoco;
                 frame.style.opacity = '1';
             }, 150);
-
-            const botoes = document.querySelectorAll('.btn-nav');
-            botoes.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.btn-nav').forEach(btn => btn.classList.remove('active'));
             elemento.classList.add('active');
         }
 
-        // FUNÇÃO LOGOUT ESPECÍFICA PARA REDE BV
         function logout() {
             sessionStorage.removeItem('logado_bv');
             window.location.href = "login-bv.html";
         }
-
-        window.onbeforeunload = function() {
-            return "Certifique-se de que salvou/imprimiu a ficha antes de sair.";
-        };
     </script>
 </body>
 </html>
