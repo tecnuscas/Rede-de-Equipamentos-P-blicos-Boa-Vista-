@@ -14,10 +14,8 @@
     <style>
         :root {
             --primary: #05c46b;
-            --primary-glow: rgba(5, 196, 107, 0.4);
             --bg-dark: #1e272e;
             --sidebar-bg: #161d23;
-            --card-bg: rgba(255, 255, 255, 0.08);
             --text-main: #ffffff;
             --accent-blue: #0fbcf9;
             --danger: #eb3b5a;
@@ -25,84 +23,65 @@
 
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             overflow: hidden; background-color: var(--bg-dark); 
             display: flex; 
         }
         
-        /* Barra Lateral */
         .sidebar {
-            width: 330px; background: var(--sidebar-bg);
-            border-right: 3px solid var(--primary);
+            width: 350px; background: var(--sidebar-bg);
+            border-right: 4px solid var(--primary);
             display: flex; flex-direction: column; padding: 25px 15px;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
             overflow-y: auto; z-index: 10;
         }
 
         .sidebar-header h1 { 
-            font-size: 18px; color: var(--primary); text-transform: uppercase; 
+            font-size: 20px; color: var(--primary); text-transform: uppercase; 
             text-align: center; margin-bottom: 25px; font-weight: 900;
-            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;
         }
 
-        /* Menu */
-        .nav-group { margin-bottom: 25px; }
+        .nav-group { margin-bottom: 30px; }
         .nav-label { 
-            font-size: 13px; color: var(--primary); text-transform: uppercase; 
-            margin-bottom: 12px; font-weight: 800; border-left: 4px solid var(--primary); 
-            padding-left: 10px; display: block;
+            font-size: 14px; color: var(--primary); text-transform: uppercase; 
+            margin-bottom: 15px; font-weight: 800; border-left: 5px solid var(--primary); 
+            padding-left: 12px; display: block;
         }
 
-        .nav-item { display: flex; margin-bottom: 10px; gap: 4px; }
+        .nav-item { display: flex; margin-bottom: 12px; gap: 5px; }
 
         .btn-nav {
-            flex: 1; background: var(--card-bg); color: var(--text-main); 
-            border: 1px solid rgba(255,255,255,0.05); padding: 15px; 
-            cursor: pointer; border-radius: 8px 0 0 8px; 
-            font-size: 14px; font-weight: 700; transition: 0.2s; 
-            text-align: left; display: flex; align-items: center; gap: 12px;
+            flex: 1; background: rgba(255,255,255,0.1); color: var(--text-main); 
+            border: 1px solid rgba(255,255,255,0.1); padding: 18px 15px; 
+            cursor: pointer; border-radius: 10px 0 0 10px; 
+            font-size: 15px; font-weight: 700; transition: 0.2s; 
+            text-align: left;
         }
 
         .btn-pop {
-            background: rgba(255,255,255,0.15); color: var(--text-main); border: none;
-            padding: 0 18px; cursor: pointer; border-radius: 0 8px 8px 0;
-            transition: 0.2s; font-size: 20px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.2); color: var(--text-main); border: none;
+            padding: 0 20px; cursor: pointer; border-radius: 0 10px 10px 0;
+            font-size: 22px; font-weight: bold;
         }
 
-        /* Efeitos */
-        .nav-item:hover .btn-nav { background: rgba(255,255,255,0.2); }
-        .nav-item.active .btn-nav { 
-            background: var(--primary); color: #000; 
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
+        .nav-item.active .btn-nav { background: var(--primary); color: #000; }
+        .btn-nav:hover { background: rgba(255,255,255,0.3); }
         .btn-pop:hover { background: var(--accent-blue); color: #000; }
 
-        .btn-form { border-left: 6px solid var(--primary); }
-        .btn-sheet { border-left: 6px solid var(--accent-blue); }
-
         .btn-sair { 
-            background: var(--danger); color: white; border: none; padding: 16px; 
-            border-radius: 8px; font-size: 14px; font-weight: 900; 
+            background: var(--danger); color: white; border: none; padding: 18px; 
+            border-radius: 10px; font-size: 15px; font-weight: 900; 
             cursor: pointer; margin-top: auto; text-transform: uppercase;
         }
 
-        /* Área Principal */
-        .wrapper { flex: 1; display: flex; flex-direction: column; }
-        #content-frame { flex: 1; border: none; background: #ffffff; }
+        .wrapper { flex: 1; display: flex; flex-direction: column; background: #fff; }
+        #content-frame { flex: 1; border: none; width: 100%; height: 100%; }
 
-        /* Rodapé Institucional Ampliado */
         .footer-brand {
-            background: #ffffff; color: #1e272e; padding: 20px;
-            font-size: 14px; text-align: center; border-top: 5px solid var(--primary);
+            background: #ffffff; color: #000; padding: 25px;
+            font-size: 15px; text-align: center; border-top: 6px solid var(--primary);
             line-height: 1.6;
         }
-        .footer-brand strong { font-size: 16px; display: block; margin-bottom: 4px; color: #000; }
-
-        @media (max-width: 900px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; border-right: none; }
-        }
+        .footer-brand strong { font-size: 17px; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -127,11 +106,11 @@
         <div class="nav-group">
             <div class="nav-label">Sistemas 2026</div>
             <div class="nav-item">
-                <button class="btn-nav btn-form" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this.parentElement)">📝 Formulário de Inscrição</button>
+                <button class="btn-nav" style="border-left: 6px solid var(--primary);" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this.parentElement)">📝 Formulário de Inscrição</button>
                 <button class="btn-pop" onclick="abrirNova('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform')">↗</button>
             </div>
             <div class="nav-item">
-                <button class="btn-nav btn-sheet" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this.parentElement)">📊 Planilha de Matrículas</button>
+                <button class="btn-nav" style="border-left: 6px solid var(--accent-blue);" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this.parentElement)">📊 Planilha de Matrículas</button>
                 <button class="btn-pop" onclick="abrirNova('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit')">↗</button>
             </div>
         </div>
@@ -154,7 +133,7 @@
 
         <footer class="footer-brand">
             <strong>SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL - SETRABES</strong>
-            Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima – Brasil - CEP: 69304-350<br>
+            Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima | CEP: 69304-350<br>
             E-mail: gabinetesetrabes@gmail.com
         </footer>
     </div>
@@ -163,13 +142,15 @@
         function carregar(url, elemento) {
             const frame = document.getElementById('content-frame');
             
-            // Aplica Cache Buster apenas para arquivos locais do repositório
-            if (!url.startsWith('http')) {
-                const sep = url.includes('?') ? '&' : '?';
-                frame.src = url + sep + 'v=' + new Date().getTime();
-            } else {
-                frame.src = url;
-            }
+            // Força o recarregamento completo do iframe para evitar tela cinza
+            const novaUrl = url.startsWith('http') ? url : url + '?v=' + Math.random();
+            
+            frame.style.display = 'none'; // Esconde
+            frame.src = novaUrl;          // Troca a URL
+            
+            frame.onload = function() {
+                frame.style.display = 'block'; // Mostra só quando carregar
+            };
 
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             elemento.classList.add('active');
